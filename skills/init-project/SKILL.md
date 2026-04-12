@@ -96,16 +96,20 @@ ln -s AGENTS.md CLAUDE.md
 
 Generate adapted to the included languages. Use this template:
 
-```markdown
+````markdown
 # Contributing
 
 ## Code Quality
 
-{include only sections for selected languages}
+```bash
+lychee -v .     # Lint markdown files for broken links and spelling errors
 ```
 
+{include only sections for selected languages}
+````
+
 **If TypeScript is included:**
-```markdown
+````markdown
 ### TypeScript
 
 ```bash
@@ -113,20 +117,20 @@ pnpm lint       # Biome linting with auto-fix
 pnpm typecheck  # TypeScript type checking
 pnpm check      # Run all checks
 ```
-```
+````
 
 **If Rust is included:**
-```markdown
+````markdown
 ### Rust
 
 ```bash
 cargo clippy --all-targets --all-features  # Linting
 cargo fmt                                   # Formatting
 ```
-```
+````
 
 **If Python is included:**
-```markdown
+````markdown
 ### Python
 
 ```bash
@@ -134,25 +138,25 @@ uv run ruff check --fix  # Linting with auto-fix
 uv run ruff format       # Code formatting
 uv run ty check          # Type checking
 ```
-```
+````
 
 **If Docker is included:**
-```markdown
+````markdown
 ### Docker
 
 ```bash
 hadolint Dockerfile*  # Dockerfile linting
 ```
-```
+````
 
 **If Shell is included:**
-```markdown
+````markdown
 ### Shell Scripts
 
 ```bash
 shellcheck **/*.sh  # Shell script linting
 ```
-```
+````
 
 **Always include this full section after Code Quality:**
 
