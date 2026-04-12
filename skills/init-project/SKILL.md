@@ -1,7 +1,7 @@
 ---
 name: init-project
-description: Scaffold a new project with opinionated tooling configs for TypeScript, Rust, and/or Python
-argument-hint: "[languages: ts|rust|python...] [project-name]"
+description: Scaffold a new project with opinionated tooling configs for TypeScript, Rust, Python, Docker, and/or Shell
+argument-hint: "[languages: ts|rust|python|docker|shell...] [project-name]"
 ---
 
 # init-project
@@ -18,6 +18,8 @@ Parse the arguments from the user's invocation. Arguments are space-separated an
 - `ts`, `typescript` → TypeScript
 - `rust` → Rust
 - `python`, `py` → Python
+- `docker` → Docker
+- `shell`, `bash`, `sh` → Shell
 
 **Project name**: The remaining non-language token. If not provided, ask the user for a project name.
 
@@ -131,6 +133,24 @@ cargo fmt                                   # Formatting
 uv run ruff check --fix  # Linting with auto-fix
 uv run ruff format       # Code formatting
 uv run ty check          # Type checking
+```
+```
+
+**If Docker is included:**
+```markdown
+### Docker
+
+```bash
+hadolint Dockerfile*  # Dockerfile linting
+```
+```
+
+**If Shell is included:**
+```markdown
+### Shell Scripts
+
+```bash
+shellcheck **/*.sh  # Shell script linting
 ```
 ```
 
