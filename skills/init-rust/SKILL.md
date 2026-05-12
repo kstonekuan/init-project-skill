@@ -9,27 +9,8 @@ Generate Rust tooling configuration files for a new project. This skill is used 
 
 ## Files to Generate
 
-### `Cargo.toml`
+Copy `assets/Cargo.toml` into the target directory and substitute `<project-or-subdirectory-name>` with the actual project (or subdirectory) name.
 
-```toml
-[package]
-name = "<project-or-subdirectory-name>"
-version = "0.1.0"
-edition = "2021"
+## Supply-chain protection
 
-[dependencies]
-
-[lints.clippy]
-pedantic = { level = "warn", priority = -1 }
-needless_pass_by_value = "allow"
-unnecessary_wraps = "allow"
-missing_panics_doc = "allow"
-```
-
-### `src/main.rs`
-
-```rust
-fn main() {
-    println!("Hello, world!");
-}
-```
+Cargo has no native minimum-release-age setting equivalent to pnpm's `minimumReleaseAge` or uv's `exclude-newer`. There is no opinionated default to ship here. For defence-in-depth, consider layering `cargo-deny` with the RustSec advisory database in projects that pull in third-party crates.

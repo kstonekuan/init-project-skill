@@ -1,0 +1,17 @@
+{
+  "name": "<project-or-subdirectory-name>",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "",
+    "build": "",
+    "lint": "biome check --write",
+    "typecheck": "tsc --noEmit",
+    "check": "pnpm run lint && pnpm run typecheck"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "latest",
+    "typescript": "latest"
+  }
+}

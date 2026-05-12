@@ -8,7 +8,7 @@ argument-hint: "[languages: ts|rust|python|docker|shell...] [project-name]"
 
 Scaffold a new project directory with opinionated tooling configurations, code quality checks, and documentation.
 
-Language-specific file generation is handled by companion skills: `init-typescript`, `init-rust`, and `init-python`. Use those skills for the language-specific steps below.
+Language-specific file generation is handled by companion skills: `init-typescript`, `init-rust`, and `init-python`. Use those skills for the language-specific steps below. Static templates for this skill live in `assets/`.
 
 ## Argument Parsing
 
@@ -40,6 +40,7 @@ If no languages are specified, ask the user which languages to include.
 Create the project directory at `./<project-name>/` relative to the current working directory.
 
 Initialize git:
+
 ```bash
 git init <project-name>
 ```
@@ -48,138 +49,25 @@ git init <project-name>
 
 #### `.gitignore`
 
-Generate a `.gitignore` with entries conditional on the selected languages:
-
-**Always include:**
-```
-.DS_Store
-.env
-.env.*
-!.env.example
-```
-
-**If TypeScript:**
-```
-node_modules/
-dist/
-.turbo/
-```
-
-**If Rust:**
-```
-target/
-```
-
-**If Python:**
-```
-__pycache__/
-*.pyc
-.venv/
-*.egg-info/
-```
+Concatenate `assets/gitignore/base` with one fragment per selected language. The base fragment is always included; add `assets/gitignore/typescript`, `assets/gitignore/rust`, and/or `assets/gitignore/python` as needed. Docker and Shell have no extra entries.
 
 #### `AGENTS.md`
 
-Create with this exact content:
-```markdown
-Read [CONTRIBUTING.md](./CONTRIBUTING.md).
-```
+Copy `assets/AGENTS.md` verbatim.
 
 #### `CLAUDE.md`
 
 Create as a symlink pointing to `AGENTS.md`:
+
 ```bash
 ln -s AGENTS.md CLAUDE.md
 ```
 
 #### `CONTRIBUTING.md`
 
-Generate adapted to the included languages. Use this template:
+Copy `assets/CONTRIBUTING.md` and strip the language sections that aren't selected. Each language section is delimited by HTML comment markers, e.g. `<!-- BEGIN:TYPESCRIPT -->` ... `<!-- END:TYPESCRIPT -->`. For every language NOT selected, delete the marker block (markers and everything between them). For every language that IS selected, delete just the marker lines and keep the body.
 
-````markdown
-# Contributing
-
-## Code Quality
-
-```bash
-lychee -v .     # Lint markdown files for broken links and spelling errors
-```
-
-{include only sections for selected languages}
-````
-
-**If TypeScript is included:**
-````markdown
-### TypeScript
-
-```bash
-pnpm lint       # Biome linting with auto-fix
-pnpm typecheck  # TypeScript type checking
-pnpm check      # Run all checks
-```
-````
-
-**If Rust is included:**
-````markdown
-### Rust
-
-```bash
-cargo clippy --all-targets --all-features  # Linting
-cargo fmt                                   # Formatting
-```
-````
-
-**If Python is included:**
-````markdown
-### Python
-
-```bash
-uv run ruff check --fix  # Linting with auto-fix
-uv run ruff format       # Code formatting
-uv run ty check          # Type checking
-```
-````
-
-**If Docker is included:**
-````markdown
-### Docker
-
-```bash
-hadolint Dockerfile*  # Dockerfile linting
-```
-````
-
-**If Shell is included:**
-````markdown
-### Shell Scripts
-
-```bash
-shellcheck **/*.sh  # Shell script linting
-```
-````
-
-**Always include this full section after Code Quality:**
-
-```markdown
-## Code Style & Philosophy
-
-### Typing & Pattern Matching
-
-- Prefer **explicit types** over raw dicts -- make invalid states unrepresentable where practical
-- Prefer **typed variants over string literals** when the set of valid values is known
-- Use **exhaustive pattern matching** (`match` in Python and Rust, `ts-pattern` in TypeScript) so the type checker can verify all cases are handled
-- Structure types to enable exhaustive matching when handling variants
-- Prefer **shared internal functions over factory patterns** when extracting common logic from hooks or functions -- keep each export explicitly defined for better IDE navigation and readability
-
-### Forward Compatibility
-
-- **Unknown values**: Parse to an explicit `Unknown*` variant (never `None`), log at warn level, preserve raw data, gracefully ignore instead of raising exception
-
-### Self-Documenting Code
-
-- **Verbose naming**: Variable and function naming should read like documentation
-- **Strategic comments**: Only for non-obvious logic or architectural decisions; avoid restating what code shows
-```
+The `## Code Style & Philosophy` section at the bottom is always kept as-is.
 
 ### 4. Generate Language-Specific Files
 
@@ -195,8 +83,10 @@ Place files in the appropriate directory (root for single-language, or the user-
 
 After creating all files:
 
-1. If TypeScript was included, run `pnpm install` in the TypeScript directory to install devDependencies
-2. If Python was included, run `uv sync` in the Python directory
-3. Report what was created with a summary of the project structure
+1. If TypeScript was included, run `pnpm install` in the TypeScript directory to install devDependencies.
+2. If Python was included, run `uv sync` in the Python directory.
+3. Report what was created with a summary of the project structure.
+
+The generated `pnpm-workspace.yaml` (`minimumReleaseAge: 10080`) and `[tool.uv] exclude-newer = "7 days"` settings enforce a 7-day minimum release age on dependencies as a supply-chain guard. Both installs above will respect this silently as long as pinned versions are old enough; if a chosen version is too new, the resolver will fail with a clear message and the user can either wait, pin an older version, or add the package to the exclude list.
 
 Do NOT make an initial git commit — leave that to the user.
