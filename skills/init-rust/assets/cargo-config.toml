@@ -1,0 +1,41 @@
+# Copy to `.cargo/config.toml` at the project (or workspace) root.
+#
+# Faster linking via mold on Linux. Linking is the one part of a build that
+# sccache CANNOT cache — a cache hit still relinks — so a fast linker is the
+# single biggest remaining win on incremental builds. mold is typically 3-10x
+# faster than GNU ld on large dependency graphs.
+#
+# Scoped per-target on purpose:
+#
+#   * Linux (x86_64 / aarch64) -> mold. Install it first:
+#       Debian/Ubuntu: sudo apt-get install mold
+#       Fedora:        sudo dnf install mold
+#       Arch:          sudo pacman -S mold
+#       Homebrew:      brew install mold   (Linux hosts only)
+#     CI runners and Docker build stages must install mold too, or the link
+#     step will fail with "cannot find linker `mold`".
+#
+#   * macOS -> intentionally NOT configured. mold does not link Mach-O (its
+#     macOS port "sold" was discontinued), and Apple's default linker
+#     (ld-prime, shipped with Xcode 15+) is already fast. Leaving the
+#     *-apple-darwin targets unset keeps native macOS builds working with zero
+#     setup. Do NOT add a global `-fuse-ld=mold` — it breaks macOS.
+#
+# If a Linux contributor can't install mold and you'd rather not require it,
+# delete the two tables below (builds fall back to the default linker).
+
+[target.x86_64-unknown-linux-gnu]
+rustflags = ["-C", "link-arg=-fuse-ld=mold"]
+
+[target.aarch64-unknown-linux-gnu]
+rustflags = ["-C", "link-arg=-fuse-ld=mold"]
+
+# --- Optional: compilation caching (sccache) -------------------------------
+# Prefer configuring sccache MACHINE-WIDE in ~/.cargo/config.toml rather than
+# here, so contributors who don't have sccache installed aren't forced to (a
+# repo-level `rustc-wrapper` breaks their build). See SKILL.md > Build
+# performance. If you DO want it committed for a team that all runs sccache,
+# uncomment:
+#
+# [build]
+# rustc-wrapper = "sccache"
