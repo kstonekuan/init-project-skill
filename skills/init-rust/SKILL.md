@@ -44,7 +44,20 @@ export SCCACHE_GCS_RW_MODE=READ_WRITE   # default is READ_ONLY — nothing is ca
 export SCCACHE_GCS_SERVICE_ACCOUNT=<sa-email>   # or SCCACHE_GCS_KEY_PATH
 ```
 
-Gotchas worth knowing: the `READ_WRITE` line is the #1 thing people miss (default `READ_ONLY` silently caches nothing). Incremental debug builds of your own workspace crates are non-cacheable by design — sccache's win is on dependency crates. Prefix a clean release build with `CARGO_INCREMENTAL=0` to maximise the hit rate. Give the cache bucket a short object-lifecycle (e.g. 30-day delete) so it self-cleans.
+Gotchas worth knowing: the `READ_WRITE` line is the #1 thing people miss (default `READ_ONLY` silently caches nothing). Give the cache bucket a short object-lifecycle (e.g. 30-day delete) so it self-cleans.
+
+**Incremental-compilation tradeoff:** sccache cannot cache a rustc invocation that uses `-C incremental`. Cargo's `dev` profile enables incremental compilation for workspace members and path dependencies, while registry dependencies remain non-incremental and can still be cached when otherwise supported; the `CARGO_INCREMENTAL` environment variable is normally unset rather than implicitly set to `1`. Do not diagnose incremental compilation from the request count alone — check `sccache --show-stats` for the non-cacheable count and reasons because linker-producing crate types are also non-cacheable.
+
+Keep Cargo's default incremental behavior on a developer machine dominated by repeated edits to the same workspace: function-level reuse can beat sccache's whole-crate cache. On a build box dominated by clean builds, branch switches, multiple checkouts, or a shared remote cache, prefer cross-build reuse by disabling incremental compilation in the same user-global config as the wrapper:
+
+```toml
+# ~/.cargo/config.toml
+[build]
+rustc-wrapper = "sccache"
+incremental = false
+```
+
+This changes every local Cargo build for that user but does not modify repositories or CI configuration. Validate the choice against representative builds, then confirm that `Compile requests executed`, cache hits, and cache misses increase. For CI/Docker or a one-off clean build, set `CARGO_INCREMENTAL=0` in that environment instead of relying on a developer's global config.
 
 ### Release/dev profiles (shipped in Cargo.toml)
 
