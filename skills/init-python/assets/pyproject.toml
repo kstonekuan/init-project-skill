@@ -6,24 +6,24 @@ requires-python = ">=3.13"
 
 [dependency-groups]
 dev = [
-    "ruff>=0.15.12", #
-    "ty>=0.0.35",
+    "ruff>=0.17.3", #
+    "ty>=0.0.97",
 ]
 
 [build-system]
 requires = [
-    "uv_build>=0.11.13", #
+    "uv_build>=0.13.7", #
 ]
 build-backend = "uv_build"
 
 [tool.uv]
-# Supply-chain hardening: refuse PyPI releases younger than 7 days.
+# Supply-chain hardening: refuse PyPI releases younger than 5 days.
 # Catches most malicious releases (typically yanked within 1-3 days) without
 # delaying legitimate CVE patches you'd pin explicitly anyway.
 # Override per-package via `exclude-newer-package = { foo = false }` for
 # trusted first-party packages.
 # See: https://docs.astral.sh/uv/concepts/resolution/#exclude-newer
-exclude-newer = "7 days"
+exclude-newer = "5 days"
 
 [tool.ruff]
 line-length = 100
