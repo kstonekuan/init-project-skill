@@ -1,8 +1,8 @@
-# Supply-chain hardening: refuse npm releases younger than 7 days.
+# Supply-chain hardening: refuse npm releases younger than 5 days.
 # Catches most malicious releases (typically yanked within 1-3 days) without
 # delaying legitimate CVE patches you'd pin explicitly anyway.
 # Add trusted internal scopes (e.g. "@myorg/*") to minimumReleaseAgeExclude
 # to bypass the delay for first-party packages.
 # See: https://pnpm.io/settings#minimumreleaseage
-minimumReleaseAge: 10080
+minimumReleaseAge: 7200
 minimumReleaseAgeExclude: []
