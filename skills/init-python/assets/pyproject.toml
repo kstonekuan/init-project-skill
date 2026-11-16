@@ -37,6 +37,7 @@ select = [
     "I",
     "B",
     "C4",
+    "C901",
     "UP",
     "ANN",
     "PTH",
@@ -52,6 +53,7 @@ select = [
     "PT011",
     "PT012",
     "PT014",
+    "PT018",
     "ASYNC210",
     "ASYNC220",
     "ASYNC221",
@@ -60,7 +62,10 @@ select = [
     "ASYNC250",
     "ASYNC251",
 ]
-ignore = ["E501", "B008", "C901", "RET504", "ANN401"]
+ignore = ["E501", "B008", "RET504", "ANN401"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 15
 
 [tool.ruff.format]
 quote-style = "double"

@@ -12,7 +12,9 @@ Generate Rust tooling configuration files for a new project. This skill is used 
 1. Copy `assets/Cargo.toml` into the target directory and substitute `<project-or-subdirectory-name>` with the actual project (or subdirectory) name. It ships pedantic clippy lints plus tuned `dev`/`release` profiles (thin debug info; LTO + `codegen-units = 1` + `strip` + `panic = "abort"` for release). Profiles only take effect in a workspace-root manifest — if you're initialising a workspace *member*, move the two `[profile.*]` tables to the root `Cargo.toml`.
 2. Copy `assets/cargo-config.toml` to `.cargo/config.toml` at the project (or workspace) root. It wires **mold** as the linker on Linux targets (see below). Skip this file for a workspace member — a single `.cargo/config.toml` at the root covers the whole workspace.
 
-3. If no Rust target exists, create `src/main.rs` containing `fn main() {}`. For a requested library, create `src/lib.rs` instead. Preserve existing source files.
+3. Copy `assets/clippy.toml` to `clippy.toml` at the workspace root.
+
+4. If no Rust target exists, create `src/main.rs` containing `fn main() {}`. For a requested library, create `src/lib.rs` instead. Preserve existing source files.
 
 ## Validation
 

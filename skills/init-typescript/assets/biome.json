@@ -21,7 +21,8 @@
         "noUnusedFunctionParameters": "error"
       },
       "suspicious": {
-        "noExplicitAny": "error"
+        "noExplicitAny": "error",
+        "noDuplicateTestHooks": "error"
       },
       "preset": "recommended",
       "nursery": {
@@ -31,7 +32,16 @@
           "options": {
             "requireExplicitCase": true
           }
+        },
+        "noExcessiveNestedBlocks": {
+          "level": "error",
+          "options": {
+            "max": 4
+          }
         }
+      },
+      "complexity": {
+        "noExcessiveNestedTestSuites": "error"
       }
     }
   },
