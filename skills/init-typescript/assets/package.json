@@ -6,12 +6,15 @@
   "scripts": {
     "dev": "",
     "build": "",
-    "lint": "biome check --write",
+    "lint": "biome check --error-on-warnings .",
     "typecheck": "tsc --noEmit",
-    "check": "pnpm run lint && pnpm run typecheck"
+    "check": "pnpm run lint && pnpm run typecheck && pnpm run knip",
+    "format": "biome check --write .",
+    "knip": "knip"
   },
   "devDependencies": {
-    "@biomejs/biome": "latest",
-    "typescript": "latest"
+    "@biomejs/biome": "2.6.6",
+    "typescript": "latest",
+    "knip": "^6.45.0"
   }
 }

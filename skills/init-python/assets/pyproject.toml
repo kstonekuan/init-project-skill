@@ -44,6 +44,21 @@ select = [
     "SIM",
     "TID",
     "RUF",
+    "PLE",
+    "LOG",
+    "PGH003",
+    "PGH004",
+    "PT010",
+    "PT011",
+    "PT012",
+    "PT014",
+    "ASYNC210",
+    "ASYNC220",
+    "ASYNC221",
+    "ASYNC222",
+    "ASYNC230",
+    "ASYNC250",
+    "ASYNC251",
 ]
 ignore = ["E501", "B008", "C901", "RET504", "ANN401"]
 
@@ -55,4 +70,6 @@ indent-style = "space"
 division-by-zero = "error"
 deprecated = "error"
 unused-ignore-comment = "error"
+invalid-ignore-comment = "error"
+ignore-comment-unknown-rule = "error"
 possibly-unresolved-reference = "error"

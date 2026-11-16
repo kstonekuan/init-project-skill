@@ -3,25 +3,28 @@
 ## Code Quality
 
 ```bash
-lychee -v .     # Lint markdown files for broken links and spelling errors
+lychee --offline --include-fragments --extensions md .
 ```
 
 <!-- BEGIN:TYPESCRIPT -->
 ### TypeScript
 
 ```bash
-pnpm lint       # Biome linting with auto-fix
-pnpm typecheck  # TypeScript type checking
-pnpm check      # Run all checks
+pnpm format
+pnpm check
 ```
 <!-- END:TYPESCRIPT -->
 
 <!-- BEGIN:RUST -->
 ### Rust
 
+Install once: `cargo install cargo-machete --version 0.9.2 --locked`.
+
 ```bash
-cargo clippy --all-targets --all-features  # Linting
-cargo fmt                                   # Formatting
+cargo fmt
+cargo machete --with-metadata --skip-target-dir
+cargo clippy --workspace --all-targets --all-features -- -D warnings
+cargo test --workspace --all-features
 ```
 <!-- END:RUST -->
 

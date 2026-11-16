@@ -10,6 +10,13 @@ pedantic = { level = "warn", priority = -1 }
 needless_pass_by_value = "allow"
 unnecessary_wraps = "allow"
 missing_panics_doc = "allow"
+unwrap_used = "warn"
+expect_used = "warn"
+panic = "warn"
+unreachable = "warn"
+needless_pass_by_ref_mut = "warn"
+todo = "deny"
+unimplemented = "deny"
 
 # Build profiles.
 # NOTE: Cargo only honours [profile.*] in the WORKSPACE-ROOT Cargo.toml. If you

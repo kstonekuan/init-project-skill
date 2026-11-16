@@ -85,8 +85,9 @@ After creating all files:
 
 1. If TypeScript was included, run `pnpm install` in the TypeScript directory to install devDependencies.
 2. If Python was included, run `uv sync` in the Python directory.
-3. Report what was created with a summary of the project structure.
+3. Run the selected languages' formatting, lint and type checks from the generated CONTRIBUTING.md and fix failures. Use the same read-only checks in CI when CI is included. For multi-directory layouts, adjust CONTRIBUTING.md commands to run in the owning directories.
+4. Report what was created with a summary of the project structure.
 
-The generated `pnpm-workspace.yaml` (`minimumReleaseAge: 10080`) and `[tool.uv] exclude-newer = "7 days"` settings enforce a 7-day minimum release age on dependencies as a supply-chain guard. Both installs above will respect this silently as long as pinned versions are old enough; if a chosen version is too new, the resolver will fail with a clear message and the user can either wait, pin an older version, or add the package to the exclude list.
+The generated `pnpm-workspace.yaml` (`minimumReleaseAge: 7200`) and `[tool.uv] exclude-newer = "5 days"` settings enforce a 5-day minimum release age on dependencies as a supply-chain guard. Both installs above will respect this silently as long as pinned versions are old enough; if a chosen version is too new, the resolver will fail with a clear message and the user can either wait, pin an older version, or add the package to the exclude list.
 
 Do NOT make an initial git commit — leave that to the user.

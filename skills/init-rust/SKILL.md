@@ -12,6 +12,14 @@ Generate Rust tooling configuration files for a new project. This skill is used 
 1. Copy `assets/Cargo.toml` into the target directory and substitute `<project-or-subdirectory-name>` with the actual project (or subdirectory) name. It ships pedantic clippy lints plus tuned `dev`/`release` profiles (thin debug info; LTO + `codegen-units = 1` + `strip` + `panic = "abort"` for release). Profiles only take effect in a workspace-root manifest — if you're initialising a workspace *member*, move the two `[profile.*]` tables to the root `Cargo.toml`.
 2. Copy `assets/cargo-config.toml` to `.cargo/config.toml` at the project (or workspace) root. It wires **mold** as the linker on Linux targets (see below). Skip this file for a workspace member — a single `.cargo/config.toml` at the root covers the whole workspace.
 
+3. If no Rust target exists, create `src/main.rs` containing `fn main() {}`. For a requested library, create `src/lib.rs` instead. Preserve existing source files.
+
+## Validation
+
+Install `cargo-machete` with `cargo install cargo-machete --version 0.9.2 --locked` and run the Rust commands in the generated CONTRIBUTING.md. When used standalone, run `cargo fmt`, `cargo machete --with-metadata --skip-target-dir`, and `cargo clippy --workspace --all-targets --all-features -- -D warnings`.
+
+For a workspace, put the shared lint table under `[workspace.lints.clippy]` and add `[lints] workspace = true` to every member. Keep invariant exceptions local with an explanatory `reason`. Scope test-only allowances for immediate assertion failures to test modules or test targets; do not allow them across production code. Machete exceptions belong in the owning package's metadata and need a concrete justification.
+
 ## Build performance
 
 These are the highest-leverage, low-effort speedups for Rust. The two levers are **caching compilation** (sccache) and **faster linking** (mold) — they're complementary: sccache skips recompiling unchanged crates, mold speeds up the link that happens even on a full cache hit.

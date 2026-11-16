@@ -15,14 +15,23 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
       "correctness": {
         "noUnusedVariables": "error",
         "noUnusedImports": "error",
         "noUnusedFunctionParameters": "error"
       },
       "suspicious": {
-        "noExplicitAny": "warn"
+        "noExplicitAny": "error"
+      },
+      "preset": "recommended",
+      "nursery": {
+        "noFloatingPromises": "error",
+        "useExhaustiveSwitchCases": {
+          "level": "error",
+          "options": {
+            "requireExplicitCase": true
+          }
+        }
       }
     }
   },
