@@ -18,11 +18,17 @@ pnpm check
 <!-- BEGIN:RUST -->
 ### Rust
 
-Install once: `cargo install cargo-machete --version 0.9.2 --locked`.
+Install once:
+
+```bash
+cargo install cargo-machete --version 0.9.2 --locked
+cargo install cargo-deny --version 0.20.2 --locked
+```
 
 ```bash
 cargo fmt
 cargo machete --with-metadata --skip-target-dir
+cargo deny check bans
 cargo clippy --workspace --all-targets --all-features -- -D warnings
 cargo test --workspace --all-features
 ```

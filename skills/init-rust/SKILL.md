@@ -14,11 +14,13 @@ Generate Rust tooling configuration files for a new project. This skill is used 
 
 3. Copy `assets/clippy.toml` to `clippy.toml` at the workspace root.
 
-4. If no Rust target exists, create `src/main.rs` containing `fn main() {}`. For a requested library, create `src/lib.rs` instead. Preserve existing source files.
+4. Copy `assets/deny.toml` to `deny.toml` at the workspace root. Keep architectural bans empty during setup; populate them as the project establishes dependency boundaries. Wire `cargo deny check bans` into Rust CI checks when CI is generated.
+
+5. If no Rust target exists, create `src/main.rs` containing `fn main() {}`. For a requested library, create `src/lib.rs` instead. Preserve existing source files.
 
 ## Validation
 
-Install `cargo-machete` with `cargo install cargo-machete --version 0.9.2 --locked` and run the Rust commands in the generated CONTRIBUTING.md. When used standalone, run `cargo fmt`, `cargo machete --with-metadata --skip-target-dir`, and `cargo clippy --workspace --all-targets --all-features -- -D warnings`.
+Install `cargo-machete` with `cargo install cargo-machete --version 0.9.2 --locked` and `cargo-deny` with `cargo install cargo-deny --version 0.20.2 --locked` and run the Rust commands in the generated CONTRIBUTING.md. When used standalone, run `cargo fmt`, `cargo machete --with-metadata --skip-target-dir`, `cargo deny check bans`, and `cargo clippy --workspace --all-targets --all-features -- -D warnings`.
 
 For a workspace, put the shared lint table under `[workspace.lints.clippy]` and add `[lints] workspace = true` to every member. Keep invariant exceptions local with an explanatory `reason`. Scope test-only allowances for immediate assertion failures to test modules or test targets; do not allow them across production code. Machete exceptions belong in the owning package's metadata and need a concrete justification.
 
@@ -76,4 +78,4 @@ This changes every local Cargo build for that user but does not modify repositor
 
 ## Supply-chain protection
 
-Cargo has no native minimum-release-age setting equivalent to pnpm's `minimumReleaseAge` or uv's `exclude-newer`. There is no opinionated default to ship here. For defence-in-depth, consider layering `cargo-deny` with the RustSec advisory database in projects that pull in third-party crates.
+Cargo has no native minimum-release-age setting equivalent to pnpm's `minimumReleaseAge` or uv's `exclude-newer`. There is no opinionated default to ship here. The scaffold runs only `cargo deny check bans`; advisory, license and source policies can be enabled separately when requested.
