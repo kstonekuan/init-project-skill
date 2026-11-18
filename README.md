@@ -34,7 +34,7 @@ The core `init-project` skill delegates to the language-specific skills (`init-t
 
 ## Opinions
 
-- **TypeScript**: Biome for linting/formatting, strict tsconfig, pnpm
+- **TypeScript**: TSRS for type checking, Biome for linting/formatting, strict tsconfig, pnpm
 - **Rust**: Pedantic clippy lints with select relaxations
 - **Python**: Ruff for linting/formatting, ty for type checking, uv for package management
 - **Code style**: Explicit types, exhaustive pattern matching, verbose naming

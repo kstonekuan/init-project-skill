@@ -11,6 +11,8 @@ Generate TypeScript tooling configuration files for a new project. This skill is
 
 Copy each template from `assets/` into the target directory. Substitute `<project-or-subdirectory-name>` in `assets/package.json` with the actual project (or subdirectory) name.
 
+Use the template's pinned TSRS version for `pnpm typecheck`. Add Microsoft's `typescript` package only if a project tool requires it or the project explicitly checks compatibility with `tsc`.
+
 | Asset | Destination |
 |---|---|
 | `assets/package.json` | `package.json` (substitute name) |

@@ -7,14 +7,14 @@
     "dev": "",
     "build": "",
     "lint": "biome check --error-on-warnings .",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsrs --noEmit --fast",
     "check": "pnpm run lint && pnpm run typecheck && pnpm run knip",
     "format": "biome check --write .",
     "knip": "knip"
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.6",
-    "typescript": "latest",
+    "tsrs": "0.25.0-ts7.1.0-beta",
     "knip": "^6.45.0"
   }
 }

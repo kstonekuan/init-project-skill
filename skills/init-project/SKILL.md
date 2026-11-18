@@ -73,7 +73,7 @@ The `## Code Style & Philosophy` section at the bottom is always kept as-is.
 
 Use the companion skills to generate language-specific files:
 
-- **TypeScript** → use the `init-typescript` skill
+- **TypeScript** → use the `init-typescript` skill for TSRS type checking and Biome linting and formatting
 - **Rust** → use the `init-rust` skill
 - **Python** → use the `init-python` skill
 
