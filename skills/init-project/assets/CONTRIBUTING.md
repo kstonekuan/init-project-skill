@@ -32,6 +32,11 @@ cargo deny check bans
 cargo clippy --workspace --all-targets --all-features -- -D warnings
 cargo test --workspace --all-features
 ```
+
+For an on-demand dependency review, start with `cargo tree`. In a workspace,
+`cargo tree --workspace --depth workspace --edges normal` is one way to focus on
+dependencies between workspace crates. Choose the packages, features and targets
+that match what you want to inspect.
 <!-- END:RUST -->
 
 <!-- BEGIN:PYTHON -->
